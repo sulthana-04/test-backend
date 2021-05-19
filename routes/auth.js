@@ -77,11 +77,11 @@ router.post('/login',async (req,res) =>{
     const test = await Test.findOne({email:req.body.email});
    if(!test) return res.status(400).send('Email is not found');
    //passwrd is crct
-   const validPass = await bcrypt.compare(req.body.password, user.password);
+   const validPass = await bcrypt.compare(req.body.password, test.password);
    if(!validPass) return res.status(401).send('Invalid password')
 
 //crt n assgn tkn
-const token = jwt.sign({_id: test._id},process.env.TOKEN_SECRET );
+const token = jwt.sign({_id: test._id},'$(process.env.TOKEN_SECRET)' );
 res.status(202).header('auth-token', token).send(token);
    });
 module.exports = router;
